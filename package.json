@@ -5,7 +5,7 @@
     "url": "https://github.com/oscaralexander"
   },
   "bugs": {
-    "url": "https://github.com/oscaralexander/jquery-tnw-sticky/issues"
+    "url": "https://github.com/thenextweb/jquery-tnw-sticky/issues"
   },
   "dependencies": {
     "jquery": "^3.2.1",
@@ -37,7 +37,7 @@
   "name": "jquery-tnw-sticky",
   "repository": {
     "type": "git",
-    "url": "https://github.com/oscaralexander/jquery-tnw-sticky.git"
+    "url": "https://github.com/thenextweb/jquery-tnw-sticky.git"
   },
   "scripts": {
     "build": "npx babel ./src/jquery.tnw-sticky.js --out-file ./dist/jquery.tnw-sticky.js",
