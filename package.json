@@ -33,7 +33,7 @@
     "sticky"
   ],
   "license": "MIT",
-  "main": "./src/jquery.tnw-sticky.js",
+  "main": "./dist/jquery.tnw-sticky.js",
   "name": "jquery-tnw-sticky",
   "repository": {
     "type": "git",
