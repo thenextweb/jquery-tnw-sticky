@@ -32,9 +32,10 @@ class TNWSticky {
             this.contentTop = 0
             this.isStickable = false
             this.isVisible = false
-            this.offset = (this.$el.attr("data-sticky-offset") || 0)
-            this.stickyEnd = 0
-            this.stickyStart = 0
+            this.offset = parseInt(this.$content.css("top"), 10) || 0
+            this.top = 0;
+            this.tnwStickyEnd = 0
+            this.tnwStickyStart = 0
 
             // Get initial bounds.
             this.updateBounds()
@@ -46,7 +47,7 @@ class TNWSticky {
             $(window).on("orientationchange resize", this.onResize.bind(this))
 
             // Handle scrolling.
-            $(window).on("tnw:scroll", this.onScroll.bind(this))
+            $(window).on("scroll:scroll", this.onScroll.bind(this))
         }
     }
 
@@ -57,19 +58,18 @@ class TNWSticky {
 
         this.$content.css({
             bottom: "auto",
-            position: "static",
-            top: 0
+            position: "static"
         })
 
         setTimeout(this.updateBounds.bind(this), 10)
-        this.interval = setInterval(this.updateBounds, this.options.updateInterval)
+        this.interval = setInterval(this.updateBounds.bind(this), this.options.updateInterval)
     }
 
     onScroll(e) {
         if (this.isStickable && this.isVisible) {
-            if (e.top > this.stickyStart) {
-                // Make sticky
-                if ((e.top + this.contentHeight) < this.stickyEnd) {
+            if (e.top > this.tnwStickyStart) {
+                // Make tnwSticky
+                if ((e.top + this.contentHeight) < this.tnwStickyEnd) {
                     // Stick content to top of screen
                     this.$content.css({
                         bottom: "auto",
@@ -89,7 +89,7 @@ class TNWSticky {
                 this.$content.css({
                     bottom: "auto",
                     position: "static",
-                    top: 0
+                    top: this.offset + "px"
                 })
             }
         }
@@ -102,19 +102,26 @@ class TNWSticky {
             // Set content width
             this.$content.css("width", this.$contentWrapper.width())
 
-            // Get sidebar content height and top
+            // Get element top
+            this.top = this.$el.offset().top
+
+            // Get content height and top
             this.contentHeight = Math.ceil(this.$content.outerHeight(true))
             this.contentTop = this.$contentWrapper.offset().top
 
+            if (this.$content.css("position") !== "absolute") {
+                this.offset = parseInt(this.$content.css("top"), 10) || 0
+            }
+
             // Set sticky breakpoints
-            this.stickyStart = this.contentTop - this.offset
-            this.stickyEnd = (this.contentTop + this.$el.height()) - this.offset
+            this.tnwStickyStart = this.contentTop - this.offset
+            this.tnwStickyEnd = (this.top + this.$el.height()) - this.offset
 
             // Determine if sidebar should get sticky
-            this.isStickable = this.$el.height() > this.contentHeight
+            this.isStickable = (this.$el.height() - (this.contentTop - this.$el.offset().top)) > this.contentHeight
 
             // Handle resizing
-            $(window).on("orientationchange resize", this.onResize.bind(this));
+            $(window).on("orientationchange resize", this.onResize.bind(this))
         }
     }
 }
